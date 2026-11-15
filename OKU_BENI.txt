@@ -81,3 +81,8 @@ SÜRÜM 9 DEĞİŞİKLİKLERİ (Renk Kartelası, Alterasyon ve Cevher Mineraller
 - Alterasyon listesi: Tüm terimler "-leşmiş / -laşmış" yapısına dönüştürüldü (silisleşmiş, killeşmiş, kloritleşmiş, serisitleşmiş, epidotlaşmış, karbonatlaşmış, limonitleşmiş, hematitleşmiş) ve yeni alterasyonlar eklendi (manyetitleşmiş, piritleşmiş, oppasitleşmiş, albitleşmiş, kaolenleşmiş).
 - Cevher mineralleri: Barit çıkarıldı; molibdenit, kalkosin, bornit, pirrotin, mangan ve spekülarit eklendi.
 - Çevrimdışı önbellek sürümü (sw.js -> kb-v9) yükseltildi.
+
+
+SÜRÜM 10 DEĞİŞİKLİKLERİ (Özel "Kuyubaşı Hızlı Loglama · Maden Jeoloğu · MBD" Amblemi)
+- Uygulama üst çubuğu, uygulama simgeleri (icon-192.png, icon-512.png) ve vektör dosya (logo.svg); üzerinde "KUYUBAŞI HIZLI LOGLAMA" ve "MADEN JEOLOĞU" yazılı, granit karot örnekli ve MBD armalı yeni kurumsal amblemle güncellendi.
+- Çevrimdışı önbellek sürümü (sw.js -> kb-v10) yükseltildi: GitHub'a yükledikten sonra tablette uygulamayı internet açıkken bir kez açıp kapatmanız yeterlidir.
