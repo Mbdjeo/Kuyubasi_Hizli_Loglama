@@ -74,3 +74,10 @@ SÜRÜM 8 DEĞİŞİKLİKLERİ (Türkçe Klavye Virgül/Nokta Desteği)
 - Karot, Litoloji, Başlık ve Foto sekmelerindeki tüm sayısal giriş alanlarında Türkçe klavyedeki virgül (,) tuşuna basıldığında anında noktaya (.) dönüştürme ve tam sayısal ayrıştırma eklendi.
 - Mobil tarayıcıların (Android/iOS) yerel ondalık ayırıcı (,) engellemesi nedeniyle oluşan "To, From'dan büyük olmalı" hatası giderildi.
 - Çevrimdışı önbellek sürümü (sw.js -> kb-v8) yükseltildi.
+
+
+SÜRÜM 9 DEĞİŞİKLİKLERİ (Renk Kartelası, Alterasyon ve Cevher Mineralleri Güncellemesi)
+- Renk seçimi: CMYK ve temel kayaç renklerinden oluşan görsel renk kartelası eklendi (birden fazla renk seçilebilir, Excel/CSV ve açıklama cümlesine renk adlarıyla işlenir).
+- Alterasyon listesi: Tüm terimler "-leşmiş / -laşmış" yapısına dönüştürüldü (silisleşmiş, killeşmiş, kloritleşmiş, serisitleşmiş, epidotlaşmış, karbonatlaşmış, limonitleşmiş, hematitleşmiş) ve yeni alterasyonlar eklendi (manyetitleşmiş, piritleşmiş, oppasitleşmiş, albitleşmiş, kaolenleşmiş).
+- Cevher mineralleri: Barit çıkarıldı; molibdenit, kalkosin, bornit, pirrotin, mangan ve spekülarit eklendi.
+- Çevrimdışı önbellek sürümü (sw.js -> kb-v9) yükseltildi.
