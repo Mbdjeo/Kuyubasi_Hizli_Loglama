@@ -62,3 +62,9 @@ SÜRÜM 6 DEĞİŞİKLİKLERİ (Yeni Kurumsal Amblem ve Simge Güncellemesi)
 - Uygulama üst çubuğundaki (header) vektör şerit ikonu yerine yeni "Jeoloji Mühendisi" amblemi eklendi.
 - PWA uygulama ikonları (icon-192.png ve icon-512.png) şeffaf arka planlı yeni amblemle güncellendi; ayrıca harici kullanım için logo.svg pakete eklendi.
 - Çevrimdışı önbellek sürümü (sw.js -> kb-v6) yükseltildi: GitHub'a yükledikten sonra tablette uygulamayı internet açıkken bir kez açıp kapatmanız yeterlidir.
+
+
+SÜRÜM 7 DEĞİŞİKLİKLERİ (Tam Hassasiyetli Yüzde Hesaplaması)
+- Karot boyu ve RQD yüzdelerindeki 1 ondalık basamağa yuvarlama (toFixed(1)) kaldırıldı; hesaplamalar tam kesirli hassasiyetle (toFixed(6), gereksiz sıfırlar temizlenerek) kaydedilir ve Excel/CSV/Özet ekranlarına aynen aktarılır.
+- "Tam karot" düğmesi manevra uzunluğunu milimetrik hassasiyetle (toFixed(4)) doldurur.
+- Çevrimdışı önbellek sürümü (sw.js -> kb-v7) yükseltildi.

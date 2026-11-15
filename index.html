@@ -85,7 +85,7 @@ if(t.id==="ip"){edit=-1;F=null;render()}
 if(t.closest("[data-e]")&&!t.dataset.d){const i=+t.closest("[data-e]").dataset.e;edit=i;F=JSON.parse(JSON.stringify(w.l[i]));render()}
 if(t.dataset.d){if(confirm("Silinsin mi?")){w.l.splice(+t.dataset.d,1);save();render()}}
 if(t.dataset.kq){$("#kt").value=+(son(w.k)+ +t.dataset.kq).toFixed(2);kv()}
-if(t.dataset.kfull){const c=kc();if(c.man>0){$("#kb").value=+(c.man*100).toFixed(1);kv()}}
+if(t.dataset.kfull){const c=kc();if(c.man>0){$("#kb").value=+(c.man*100).toFixed(4);kv()}}
 if(t.dataset.qa){keep();F.to=t.dataset.qa;render()}
 if(t.id==="ke"){const c=kc(),dd=nv(w.h.derinlik);
 if(!(c.man>0)||isNaN(c.b)||c.b<0){alert("To, From'dan büyük olmalı ve karot boyu (cm) girilmeli");return}
@@ -107,10 +107,10 @@ $("#kw").innerHTML=KW.map(k=>`<option value="${k[0]}">`).join("");
 const DT=["baslama","bitis"],HS={datum:["ITRF96 / TUREF","ED50","WGS84"],dilim:["3° - 27","3° - 30","3° - 33","3° - 36","3° - 39","3° - 42","3° - 45","6° - UTM 35","6° - UTM 36","6° - UTM 37"]};
 const iso=v=>{const m=/^(\d{2})\.(\d{2})\.(\d{4})$/.exec(v);return m?m[3]+"-"+m[2]+"-"+m[1]:v},trd=v=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v);return m?m[3]+"."+m[2]+"."+m[1]:v};
 function ort(a,x,y,k){k=k||"pct";let s=0,L=0;a.forEach((e,i)=>{const f=i?a[i-1].to:0,lo=Math.max(f,x),hi=Math.min(e.to,y),v=e[k];if(hi>lo&&v!=null&&!isNaN(v)){s+=(hi-lo)*v;L+=hi-lo}});return L?s/L:null}
-function ozet(w){let h="";const r=ort(w.k,0,1e9),q=ort(w.k,0,1e9,"rqd");if(r!=null)h+=`<div>Ağırlıklı karot verimi: %${r.toFixed(1)} (${son(w.k)} m)</div>`;if(q!=null)h+=`<div>Ağırlıklı RQD: %${q.toFixed(1)}</div>`;
+function ozet(w){let h="";const r=ort(w.k,0,1e9),q=ort(w.k,0,1e9,"rqd");if(r!=null)h+=`<div>Ağırlıklı karot verimi: %${+r.toFixed(6)} (${son(w.k)} m)</div>`;if(q!=null)h+=`<div>Ağırlıklı RQD: %${+q.toFixed(6)}</div>`;
 const b=+LS.kb_bk||0,has=w.l.length||w.k.length;if(has)h+=!b?'<div class="w">⚠ Henüz yedek alınmadı (Excel/JSON/CSV paylaş)</div>':Date.now()-b>864e5?`<div class="w">⚠ Son yedek ${Math.round((Date.now()-b)/36e5)} saat önce</div>`:`<div class="o">Son yedek: ${new Date(b).toLocaleString("tr-TR")}</div>`;return h}
 function csv(w){const h=w.h,q=v=>typeof v==="number"?v:'"'+String(v==null?"":v).replace(/"/g,'""')+'"',c=["kuyu_no","dogu_y","kuzey_x","z","datum","dilim","azimut","egim","derinlik","from","to","litoloji","renk","kirik","dayanim","alterasyon","mineral","yogunluk","karot_verimi_pct","rqd_pct","aciklama"];
-const rows=w.l.map((e,i)=>{const f=i?w.l[i-1].to:0,r=ort(w.k,f,e.to),q=ort(w.k,f,e.to,"rqd");return[h.kuyu_no,nv(h.y),nv(h.x),nv(h.z),h.datum,h.dilim,nv(h.azimut),nv(h.egim),nv(h.derinlik),f,e.to,e.kod,e.renk.join("+"),e.kirik,e.dayanim,e.alterasyon.join("+"),e.mineral.join("+"),e.yogunluk,r==null?"":+r.toFixed(1),q==null?"":+q.toFixed(1),e.acik].map(v=>typeof v==="number"&&isNaN(v)?"":v)});
+const rows=w.l.map((e,i)=>{const f=i?w.l[i-1].to:0,r=ort(w.k,f,e.to),q=ort(w.k,f,e.to,"rqd");return[h.kuyu_no,nv(h.y),nv(h.x),nv(h.z),h.datum,h.dilim,nv(h.azimut),nv(h.egim),nv(h.derinlik),f,e.to,e.kod,e.renk.join("+"),e.kirik,e.dayanim,e.alterasyon.join("+"),e.mineral.join("+"),e.yogunluk,r==null?"":+r.toFixed(6),q==null?"":+q.toFixed(6),e.acik].map(v=>typeof v==="number"&&isNaN(v)?"":v)});
 return new Blob(["\ufeff"+[c,...rows].map(r=>r.map(q).join(",")).join("\r\n")],{type:"text/csv"})}
 document.addEventListener("click",ev=>{const t=ev.target,w=W();
 if(t.dataset.q){keep();const fr=edit>=0?(edit?w.l[edit-1].to:0):son(w.l);F.to=String(+(fr+ +t.dataset.q).toFixed(2));render()}
@@ -136,7 +136,7 @@ if(t.id==="fz")fAll(cur).then(async L=>{if(!L.length){alert("Bu kuyu için foto�
 if(t.id==="hc"){const h=document.documentElement;h.dataset.c=h.dataset.c==="1"?"0":"1";LS.kb_hc=h.dataset.c}});
 if(LS.kb_hc==="1")document.documentElement.dataset.c="1";
 function kc(){const f=son(W().k),to=nv($("#kt").value),man=+(to-f).toFixed(4),b=nv($("#kb").value),rv=$("#kr").value.trim(),rb=rv===""?null:nv(rv);
-return{f,to,man,b,rb,pct:man>0&&b>=0?+(b/man).toFixed(1):null,rqd:man>0&&rb!==null&&rb>=0?+(rb/man).toFixed(1):null}}
+return{f,to,man,b,rb,pct:man>0&&b>=0?+(b/man).toFixed(6):null,rqd:man>0&&rb!==null&&rb>=0?+(rb/man).toFixed(6):null}}
 function kv(){const e=$("#kv");if(!e)return;const c=kc();e.textContent=c.man>0?`Manevra ${c.man} m · Karot verimi: ${c.pct==null||isNaN(c.pct)?"–":"%"+c.pct}${c.rqd!=null?" · RQD: %"+c.rqd:""}`:"To, From'dan büyük olmalı"}
 document.addEventListener("input",ev=>{if(["kt","kb","kr"].includes(ev.target.id))kv()});
 function foc(){const e=document.getElementById(tab==="k"?"kb":"to");if(e){e.focus();e.select&&e.select()}}
