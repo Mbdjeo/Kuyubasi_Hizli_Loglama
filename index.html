@@ -38,7 +38,7 @@ const join=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" ve "+a[a.length-1
 function cumle(e){const p=[];if(e.renk&&e.renk.length)p.push(join(e.renk)+" renk tonunda");if(e.kirik)p.push(e.kirik);if(e.dayanim)p.push(e.dayanim);
 if(e.alterasyon&&e.alterasyon.length)p.push(join(e.alterasyon));if(e.mineral&&e.mineral.length)p.push((e.yogunluk?e.yogunluk+" ":"")+join(e.mineral)+" gözlenen");
 const t=p.length?cap(p.join(", ")+"."):"";return(t+(t&&e.acik?" ":"")+(e.acik||"")).trim()}
-const son=a=>a.length?a[a.length-1].to:0,nv=v=>parseFloat(String(v).replace(",","."));
+const son=a=>a.length?+a[a.length-1].to:0,nv=v=>{const s=String(v??"").trim().replace(/\s+/g,"").replace(/,/g,".");return s===""?NaN:Number(s)};
 function blank(){return{to:"",kod:"",renk:[],kirik:"",dayanim:"",alterasyon:[],mineral:[],yogunluk:"",acik:""}}
 function chips(f){return`<div class="chips">${SOZ[f].map(x=>`<button type="button" class="chip ${(F[f]||[]).includes(x)?"on":""}" data-f="${f}" data-v="${x}">${x}</button>`).join("")}</div>`}
 function sel(f){return`<select data-s="${f}"><option value=""></option>${SOZ[f].map(x=>`<option ${F[f]===x?"selected":""}>${x}</option>`).join("")}</select>`}
@@ -47,7 +47,7 @@ $("#t").innerHTML=[["b","Başlık"],["l","Litoloji"],["k","Karot"],["f","Foto"],
 function render(){head();const w=W(),m=$("#m");
 if(tab==="b"){m.innerHTML=`<div class="card">${HB.map(([k,t])=>`<label>${t}</label>`+(HS[k]?`<select data-h="${k}"><option value=""></option>${HS[k].map(o=>`<option ${w.h[k]===o?"selected":""}>${o}</option>`).join("")}</select>`:`<input data-h="${k}" ${DT.includes(k)?'type="date"':""} value="${iso(w.h[k]||"")}" ${["x","y","z","azimut","egim","derinlik"].includes(k)?'inputmode="decimal"':""}>`)).join("")}</div>`}
 if(tab==="l"){if(!F)F=blank();const fr=edit>=0?(edit?w.l[edit-1].to:0):son(w.l);
-m.innerHTML=`<div class="card"><div class="big">From: ${fr} m</div><label>To (m)</label><input id="to" inputmode="decimal" value="${F.to}" placeholder="alt derinlik"><div class="chips q" style="margin-top:6px">${[1,1.5,2,3,5].map(q=>`<button type="button" class="chip" data-q="${q}">+${q} m</button>`).join("")}${w.l.length&&edit<0?'<button type="button" class="chip" data-cp="1">Önceki ile aynı</button>':""}${son(w.k)>fr?`<button type="button" class="chip" data-qa="${son(w.k)}">Karot sonu ${son(w.k)} m</button>`:""}</div>
+m.innerHTML=`<div class="card"><div class="big">From: ${fr} m</div><label>To (m)</label><input id="to" type="text" inputmode="decimal" autocomplete="off" value="${F.to}" placeholder="alt derinlik"><div class="chips q" style="margin-top:6px">${[1,1.5,2,3,5].map(q=>`<button type="button" class="chip" data-q="${q}">+${q} m</button>`).join("")}${w.l.length&&edit<0?'<button type="button" class="chip" data-cp="1">Önceki ile aynı</button>':""}${son(w.k)>fr?`<button type="button" class="chip" data-qa="${son(w.k)}">Karot sonu ${son(w.k)} m</button>`:""}</div>
 <label>Litoloji</label><input id="kod" list="kw" value="${F.kod}" autocomplete="off" placeholder="yazarak ara">
 <div class="chips" style="margin-top:6px">${rec.slice(0,6).map(k=>`<button type="button" class="chip" data-r="${k}">${k}</button>`).join("")}</div>
 <label>${ADL.renk}</label>${chips("renk")}<label>${ADL.kirik}</label>${sel("kirik")}<label>${ADL.dayanim}</label>${sel("dayanim")}
@@ -56,9 +56,9 @@ m.innerHTML=`<div class="card"><div class="big">From: ${fr} m</div><label>To (m)
 <div class="pre" id="pv">${cumle(F)}</div><button class="btn" id="ek">${edit>=0?"Güncelle":"Ekle"}</button>${edit>=0?'<button class="btn s" id="ip">Vazgeç</button>':w.l.length?'<button class="btn s" id="ul">Son aralığı geri al</button>':""}</div>
 <div class="card">${w.l.map((e,i)=>`<div class="it"><i style="background:rgb(${KM[e.kod]||"255,255,255"})"></i><div data-e="${i}"><b>${(i?w.l[i-1].to:0)}–${e.to} m · ${e.kod}</b><br>${cumle(e)}</div><button data-d="${i}">✕</button></div>`).reverse().join("")||"Henüz aralık yok"}</div>`}
 if(tab==="k"){const f=son(w.k),ln=w.k.length?+(f-(w.k.length>1?w.k[w.k.length-2].to:0)).toFixed(2):3;
-m.innerHTML=`<div class="card"><div class="big">Karot – From: ${f} m</div><label>To (m) – manevra sonu</label><input id="kt" inputmode="decimal" value="${+(f+ln).toFixed(2)}"><div class="chips q" style="margin-top:6px">${[1,1.5,3].map(q=>`<button type="button" class="chip" data-kq="${q}">+${q} m</button>`).join("")}</div>
-<label>Alınan karot boyu (cm) – ölçülen</label><input id="kb" inputmode="decimal" placeholder="ör. 50"><div class="chips q" style="margin-top:6px"><button type="button" class="chip" data-kfull="1">Tam karot (manevra kadar)</button></div>
-<label>RQD: 10 cm üzeri parçaların toplamı (cm) – opsiyonel</label><input id="kr" inputmode="decimal">
+m.innerHTML=`<div class="card"><div class="big">Karot – From: ${f} m</div><label>To (m) – manevra sonu</label><input id="kt" type="text" inputmode="decimal" autocomplete="off" value="${+(f+ln).toFixed(2)}"><div class="chips q" style="margin-top:6px">${[1,1.5,3].map(q=>`<button type="button" class="chip" data-kq="${q}">+${q} m</button>`).join("")}</div>
+<label>Alınan karot boyu (cm) – ölçülen</label><input id="kb" type="text" inputmode="decimal" autocomplete="off" placeholder="ör. 50"><div class="chips q" style="margin-top:6px"><button type="button" class="chip" data-kfull="1">Tam karot (manevra kadar)</button></div>
+<label>RQD: 10 cm üzeri parçaların toplamı (cm) – opsiyonel</label><input id="kr" type="text" inputmode="decimal" autocomplete="off">
 <div class="pre" id="kv"></div><button class="btn" id="ke">Ekle</button>${w.k.length?'<button class="btn s" id="uk">Son kaydı geri al</button>':""}</div>
 <div class="card">${w.k.map((e,i)=>`<div class="it"><div><b>${i?w.k[i-1].to:0}–${e.to} m</b> · manevra ${+(e.to-(i?w.k[i-1].to:0)).toFixed(2)} m${e.boy!=null?" · karot "+e.boy+" cm":""} · <b>%${e.pct}</b>${e.rqd!=null?" · RQD %"+e.rqd:""}</div>${i===w.k.length-1?`<button data-kd="${i}">✕</button>`:""}</div>`).reverse().join("")||"Henüz kayıt yok"}</div>`;kv()}
 if(tab==="f"){m.innerHTML=`<div class="card"><div class="big">Fotoğraf – derinlik aralığı</div><div class="row"><div><label>From (m)</label><input id="ff" inputmode="decimal" value="${FS.f}"></div><div><label>To (m)</label><input id="ft" inputmode="decimal" value="${FS.t}" placeholder="tek derinlikse boş"></div></div>
@@ -84,7 +84,7 @@ const e={...F,to};if(edit>=0)w.l[edit]=e;else w.l.push(e);rec=[e.kod,...rec.filt
 if(t.id==="ip"){edit=-1;F=null;render()}
 if(t.closest("[data-e]")&&!t.dataset.d){const i=+t.closest("[data-e]").dataset.e;edit=i;F=JSON.parse(JSON.stringify(w.l[i]));render()}
 if(t.dataset.d){if(confirm("Silinsin mi?")){w.l.splice(+t.dataset.d,1);save();render()}}
-if(t.dataset.kq){$("#kt").value=+(son(w.k)+ +t.dataset.kq).toFixed(2);kv()}
+if(t.dataset.kq){$("#kt").value=+(son(w.k)+ +t.dataset.kq).toFixed(4);kv()}
 if(t.dataset.kfull){const c=kc();if(c.man>0){$("#kb").value=+(c.man*100).toFixed(4);kv()}}
 if(t.dataset.qa){keep();F.to=t.dataset.qa;render()}
 if(t.id==="ke"){const c=kc(),dd=nv(w.h.derinlik);
@@ -100,7 +100,7 @@ if(t.dataset.kd){w.k.splice(+t.dataset.kd,1);save();render()}
 if(t.id==="xl")fAll(cur).then(L=>{const nm=fnames(L,w.h.kuyu_no);dis(xlsx(w,L.map((p,i)=>[nm[i],p.from,p.to,p.note||""])),(w.h.kuyu_no||"kuyu")+".xlsx")});if(t.id==="js")dis(new Blob([JSON.stringify(w)],{type:"application/json"}),(w.h.kuyu_no||"kuyu")+".json");
 if(t.id==="nw"){yeni();F=null;tab="b";render()}if(t.id==="sil"&&confirm("Kuyu silinsin mi?")){fAll(cur).then(a=>a.forEach(p=>fDel(p.id)));delete D[cur];cur=Object.keys(D)[0];if(!cur)yeni();save();render()}});
 function keep(){if(!F)return;const g=i=>document.getElementById(i);if(g("to")){F.to=g("to").value;F.kod=g("kod").value.trim();F.acik=g("ac").value}document.querySelectorAll("[data-s]").forEach(s=>F[s.dataset.s]=s.value)}
-document.addEventListener("input",ev=>{const t=ev.target,w=W();if(t.dataset.h){w.h[t.dataset.h]=t.value;save();head()}
+document.addEventListener("input",ev=>{const t=ev.target,w=W();if(t.dataset.h){if(["x","y","z","azimut","egim","derinlik"].includes(t.dataset.h)&&t.value.includes(","))t.value=t.value.replace(/,/g,".");w.h[t.dataset.h]=t.value;save();head()}
 if(F&&["to","kod","ac"].includes(t.id)){keep();const p=$("#pv");if(p)p.textContent=cumle(F)}});
 document.addEventListener("change",ev=>{const t=ev.target;if(t.dataset.s){keep();const p=$("#pv");if(p)p.textContent=cumle(F)}if(t.id==="sw"){cur=t.value;save();render()}});
 $("#kw").innerHTML=KW.map(k=>`<option value="${k[0]}">`).join("");
@@ -135,10 +135,10 @@ if(t.dataset.fd&&confirm("Fotoğraf silinsin mi?"))fDel(t.dataset.fd).then(()=>r
 if(t.id==="fz")fAll(cur).then(async L=>{if(!L.length){alert("Bu kuyu için fotoğraf yok");return}const nm=fnames(L,w.h.kuyu_no),fs=[];for(let i=0;i<L.length;i++)fs.push([nm[i],new Uint8Array(await L[i].blob.arrayBuffer())]);dis(zip(fs,"application/zip"),sf(w.h.kuyu_no||"kuyu")+"_foto.zip")});
 if(t.id==="hc"){const h=document.documentElement;h.dataset.c=h.dataset.c==="1"?"0":"1";LS.kb_hc=h.dataset.c}});
 if(LS.kb_hc==="1")document.documentElement.dataset.c="1";
-function kc(){const f=son(W().k),to=nv($("#kt").value),man=+(to-f).toFixed(4),b=nv($("#kb").value),rv=$("#kr").value.trim(),rb=rv===""?null:nv(rv);
-return{f,to,man,b,rb,pct:man>0&&b>=0?+(b/man).toFixed(6):null,rqd:man>0&&rb!==null&&rb>=0?+(rb/man).toFixed(6):null}}
-function kv(){const e=$("#kv");if(!e)return;const c=kc();e.textContent=c.man>0?`Manevra ${c.man} m · Karot verimi: ${c.pct==null||isNaN(c.pct)?"–":"%"+c.pct}${c.rqd!=null?" · RQD: %"+c.rqd:""}`:"To, From'dan büyük olmalı"}
-document.addEventListener("input",ev=>{if(["kt","kb","kr"].includes(ev.target.id))kv()});
+function kc(){const f=son(W().k),ktEl=$("#kt"),kbEl=$("#kb"),krEl=$("#kr"),to=ktEl?nv(ktEl.value):NaN,man=+(to-f).toFixed(4),b=kbEl?nv(kbEl.value):NaN,rv=krEl?krEl.value.trim():"",rb=rv===""?null:nv(rv);
+return{f,to,man,b,rb,pct:man>0&&!isNaN(b)&&b>=0?+(b/man).toFixed(6):null,rqd:man>0&&rb!==null&&!isNaN(rb)&&rb>=0?+(rb/man).toFixed(6):null}}
+function kv(){const e=$("#kv");if(!e)return;const c=kc();e.textContent=isNaN(c.to)?"Geçerli bir To değeri girin":c.man>0?`Manevra ${c.man} m · Karot verimi: ${c.pct==null||isNaN(c.pct)?"–":"%"+c.pct}${c.rqd!=null?" · RQD: %"+c.rqd:""}`:`To (${c.to}), From (${c.f}) değerinden büyük olmalı`}
+document.addEventListener("input",ev=>{if(["kt","kb","kr","to","ff","ft"].includes(ev.target.id)){const el=ev.target;if(el.value.includes(",")){const p=el.selectionStart;el.value=el.value.replace(/,/g,".");if(p!=null)try{el.setSelectionRange(p,p)}catch(e){}}if(["kt","kb","kr"].includes(el.id))kv()}});
 function foc(){const e=document.getElementById(tab==="k"?"kb":"to");if(e){e.focus();e.select&&e.select()}}
 let WL;async function wl(){try{if("wakeLock" in navigator&&document.visibilityState==="visible"&&!WL){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}}catch(e){}}
 document.addEventListener("visibilitychange",wl);wl();

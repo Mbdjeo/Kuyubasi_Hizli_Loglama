@@ -68,3 +68,9 @@ SÜRÜM 7 DEĞİŞİKLİKLERİ (Tam Hassasiyetli Yüzde Hesaplaması)
 - Karot boyu ve RQD yüzdelerindeki 1 ondalık basamağa yuvarlama (toFixed(1)) kaldırıldı; hesaplamalar tam kesirli hassasiyetle (toFixed(6), gereksiz sıfırlar temizlenerek) kaydedilir ve Excel/CSV/Özet ekranlarına aynen aktarılır.
 - "Tam karot" düğmesi manevra uzunluğunu milimetrik hassasiyetle (toFixed(4)) doldurur.
 - Çevrimdışı önbellek sürümü (sw.js -> kb-v7) yükseltildi.
+
+
+SÜRÜM 8 DEĞİŞİKLİKLERİ (Türkçe Klavye Virgül/Nokta Desteği)
+- Karot, Litoloji, Başlık ve Foto sekmelerindeki tüm sayısal giriş alanlarında Türkçe klavyedeki virgül (,) tuşuna basıldığında anında noktaya (.) dönüştürme ve tam sayısal ayrıştırma eklendi.
+- Mobil tarayıcıların (Android/iOS) yerel ondalık ayırıcı (,) engellemesi nedeniyle oluşan "To, From'dan büyük olmalı" hatası giderildi.
+- Çevrimdışı önbellek sürümü (sw.js -> kb-v8) yükseltildi.
