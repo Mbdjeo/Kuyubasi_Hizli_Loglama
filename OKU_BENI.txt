@@ -1,0 +1,64 @@
+KUYUBAŞI HIZLI LOGLAMA - prototip
+
+Dosyalar: index.html, manifest.json, sw.js, icon-192.png, icon-512.png  (hepsi aynı klasörde)
+
+Kullanım
+1) Klasörü HTTPS destekli bir yere koy (kurum web sunucusu, GitHub Pages, Netlify vb.).
+2) Tablette Chrome ile adresi aç > menü > "Ana ekrana ekle / Uygulamayı yükle". İlk açılıştan sonra internetsiz çalışır.
+3) Kuyu başında: Başlık > Litoloji (To yaz, litoloji ve seçimler) > Kurtarma. Veri tablette otomatik saklanır.
+4) Özet/Çıktı sekmesinden "Excel paylaş" ile .xlsx'i OneDrive/Drive/e-posta'ya gönder.
+5) Kamp bilgisayarında: python kobo_to_logplot.py convert kuyu.xlsx LithType.key cikti
+   sonra kuyu_log_pdf.py veya LogPlot 8 ile logu çiz.
+
+Notlar
+- HTTPS olmadan (örn. düz http://bilgisayar-ip) çevrimdışı yükleme çalışmaz, sadece sayfa açıkken kullanılır.
+- Veri tarayıcı depolamasındadır: tarayıcı verisini silmeden önce mutlaka Excel/JSON dışa aktar.
+- Excel çıktısının dönüşüm betiğiyle uyumu test edildi; Android cihazda ekran/dokunma denemesi yapılmadı.
+
+ngrok ile PC'den deneme (Windows)
+1) ngrok hesabı aç, ngrok'u kur, bir kez:  ngrok config add-authtoken <TOKENİN>
+2) Sadece bu klasörde (başka dosya açığa çıkmasın):  python -m http.server 8000
+3) İkinci pencerede:  ngrok http 8000      -> görünen https://....ngrok-free.app adresini tablete yaz
+4) Tablette Chrome ile aç, ngrok uyarı sayfasında "Visit Site" de (7 günlük çerez bırakır), sonra menüden "Uygulamayı yükle".
+5) Çevrimdışı testi: uygulamayı bir kez açtıktan sonra uçak moduna al, uygulamayı aç, birkaç aralık gir.
+6) Test bitince ngrok'u kapat (adres herkese açık).
+Not: Veri PC'de değil, tabletin tarayıcı depolamasında tutulur. Aynı adresten açtığın sürece veri kalır.
+
+SÜRÜM 2 DEĞİŞİKLİKLERİ
+- Başlık: Datum ve Dilim alanları, tarih seçici (Excel'e eski gg.aa.yyyy biçiminde yazılır), X=Kuzey / Y=Doğu etiketi.
+- Litoloji: +1/+1.5/+2/+3/+5 m hızlı derinlik düğmeleri, "Önceki ile aynı" düğmesi, kırık-çatlak ve dayanım zorunlu, To toplam derinliği aşamaz.
+- Özet: ağırlıklı ortalama kurtarma, litoloji-kurtarma bitiş kontrolü, 24 saati geçen yedek uyarısı.
+- Çıktı: "QGIS için CSV" (dogu_y, kuzey_x ayrı sütun; her litoloji aralığına kurtarma ortalaması işlenir), "JSON geri yükle".
+- Çevrimdışı: servis çalışanı artık güncellemeleri alır (önce ağ, yoksa önbellek); tarayıcıdan kalıcı depolama istenir.
+- Yeni sürümü yükledikten sonra tablette uygulamayı bir kez internetle aç, kapat, tekrar aç.
+
+SÜRÜM 3 DEĞİŞİKLİKLERİ
+- Foto sekmesi: kamera/galeriden fotoğraf, derinlik aralığına (From-To) ve nota bağlı. Fotoğraflar tablette küçültülüp (1600 px) saklanır.
+- Özet: "Fotoğraflar (ZIP)" -> dosyalar KUYUNO_FROM-TO_SIRA.jpg adıyla. Excel'e FOTO sayfası eklenir (Dosya, From, To, Not).
+- kobo_to_logplot.py FOTO sayfasını okumaz/etkilemez; LogPlot dönüşümü test edildi (BASLIK, LITOLOJI, KURTARMA, GOZLEM aynen).
+- JSON yedek fotoğrafları içermez; fotoğraflar için ZIP al.
+- Yeni logo ve simge, üst çubukta yüksek kontrast (güneş) düğmesi (◐).
+- Güncelleme: GitHub'a aynı isimli dosyaları yükle, tablette uygulamayı internetle bir kez aç.
+
+SÜRÜM 4 DEĞİŞİKLİKLERİ (saha hızı ve ergonomi)
+- "Kurtarma" artık "Karot verimi". RQD ayrı, opsiyonel bir alan (karot veriminden büyük olamaz). Excel KURTARMA sayfasında 3. sütun karot verimi, 4. sütun RQD; kobo_to_logplot.py ilk 3 sütunu okuduğu için çıktı değişmez.
+- Karot sekmesi manevra hızına göre: To otomatik (son manevra uzunluğu kadar), +1/+1.5/+3 m ve %100/95/90/80/70/50/0 düğmeleri, Ekle sonrası imleç To alanına gelir.
+- Litoloji sekmesinde "Karot sonu" çipi, "Son aralığı geri al" düğmesi; Ekle düğmesi ekranın altında sabit.
+- Özet: ağırlıklı karot verimi ve RQD. QGIS CSV'ye rqd_pct sütunu eklendi.
+- Uygulama açıkken ekran uykuya geçmez (pil tüketimi artar, şarj imkânını düşün).
+
+SÜRÜM 5 DEĞİŞİKLİKLERİ (karot boyundan otomatik verim)
+- Karot sekmesinde yüzde elle girilmez; ölçülen karot boyu (cm) girilir.
+  Formül: Karot verimi % = karot boyu (cm) / manevra boyu (m)   [= karot boyu(m) / manevra(m) x 100]
+  Örnek: 1 m manevra, 50 cm karot -> %50.
+- RQD: 10 cm ve üzeri parçaların toplamı (cm) girilir. RQD % = parça toplamı (cm) / manevra (m). Karot boyunu aşamaz.
+- Yüzde canlı hesaplanıp ekranda gösterilir. %100'ü aşarsa (karot boyu manevradan uzun) onay sorulur ve %100 kaydedilir; ham karot boyu saklanır.
+- "Tam karot" çipi karot boyunu manevra kadar doldurur.
+- Excel KURTARMA sayfası: 3. sütun karot verimi %, 4. RQD %, 5. karot boyu (cm), 6. RQD parça toplamı (cm). Betik ilk 3 sütunu okur, LogPlot çıktısı değişmez.
+- Karot listesinde yalnızca son kayıt silinebilir (aralıkların sürekliliği bozulmasın diye).
+
+
+SÜRÜM 6 DEĞİŞİKLİKLERİ (Yeni Kurumsal Amblem ve Simge Güncellemesi)
+- Uygulama üst çubuğundaki (header) vektör şerit ikonu yerine yeni "Jeoloji Mühendisi" amblemi eklendi.
+- PWA uygulama ikonları (icon-192.png ve icon-512.png) şeffaf arka planlı yeni amblemle güncellendi; ayrıca harici kullanım için logo.svg pakete eklendi.
+- Çevrimdışı önbellek sürümü (sw.js -> kb-v6) yükseltildi: GitHub'a yükledikten sonra tablette uygulamayı internet açıkken bir kez açıp kapatmanız yeterlidir.
