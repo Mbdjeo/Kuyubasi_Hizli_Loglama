@@ -86,3 +86,9 @@ SÜRÜM 9 DEĞİŞİKLİKLERİ (Renk Kartelası, Alterasyon ve Cevher Mineraller
 SÜRÜM 10 DEĞİŞİKLİKLERİ (Özel "Kuyubaşı Hızlı Loglama · Maden Jeoloğu · MBD" Amblemi)
 - Uygulama üst çubuğu, uygulama simgeleri (icon-192.png, icon-512.png) ve vektör dosya (logo.svg); üzerinde "KUYUBAŞI HIZLI LOGLAMA" ve "MADEN JEOLOĞU" yazılı, granit karot örnekli ve MBD armalı yeni kurumsal amblemle güncellendi.
 - Çevrimdışı önbellek sürümü (sw.js -> kb-v10) yükseltildi: GitHub'a yükledikten sonra tablette uygulamayı internet açıkken bir kez açıp kapatmanız yeterlidir.
+
+
+SÜRÜM 11 DEĞİŞİKLİKLERİ (Antetli Kağıt / Slayt Altı Saydam Logo Filigranı)
+- Tüm sekmelerde (Başlık, Litoloji, Karot, Foto, Özet/Çıktı) pencerelerin alt kısmına antetli kağıt / slayt alt logosu görünümünde saydam (filigran) kurumsal logo eklendi.
+- Tıklamaları ve veri girişini engellemeyecek şekilde (pointer-events:none) konumlandırıldı; gündüz, gece ve yüksek kontrast temalarına otomatik uyum sağlar.
+- Çevrimdışı önbellek sürümü (sw.js -> kb-v11) yükseltildi.
